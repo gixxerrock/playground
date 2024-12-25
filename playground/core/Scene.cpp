@@ -6,6 +6,7 @@
 //
 #include "Scene.hpp"
 #include "SoundObject.hpp"
+#include "Event.hpp"
 
 Scene::Scene(int _rate, int _channels)
 {
@@ -23,16 +24,27 @@ void Scene::SetParameter(char const *name, char const *parameter, void *value)
 {
     // TODO:
 }
-void Scene::Start(void)
+
+void Scene::HandleEvent(Event *event)
 {
-    for(auto o : soundObjectList) {
-        o->Start();
-    }
-}
-void Scene::Stop(void)
-{
-    for(auto o : soundObjectList) {
-        o->Stop();
+    switch(event->type)
+    {
+        case(Event::NoteOn):
+        {
+            for(auto o : soundObjectList) {
+                o->Start();
+            }
+            break;
+        }
+        case(Event::NoteOff):
+        {
+            for(auto o : soundObjectList) {
+                o->Stop();
+            }
+            break;
+        }
+            
+        
     }
 }
 

@@ -12,6 +12,7 @@
 //#include <cstdio>
 #include "3rdparty/portaudio.h"
 #include "core/Scene.hpp"
+#include "core/Event.hpp"
 #include "core/SoundObject.hpp"
 
 #define NUM_SECONDS   (5)
@@ -170,9 +171,16 @@ int main(int argc, char* argv[])
             {
                 ch = getchar();
                 if(ch == 'a')
-                    wrapper.GetScene()->Start();
+                {
+                    Event event(Event::NoteOn, 0);
+                    wrapper.GetScene()->HandleEvent(&event);
+                }
+                
                 if(ch == 's')
-                    wrapper.GetScene()->Stop();
+                {
+                    Event event(Event::NoteOff, 0);
+                    wrapper.GetScene()->HandleEvent(&event);
+                }
             }
 
             wrapper.stop();

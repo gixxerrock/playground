@@ -9,7 +9,7 @@
 
 class BuildingBlock;
 class SoundObject;
-
+class Event;
 class Scene
 {
 public:
@@ -21,8 +21,10 @@ public:
 
     void ProcessBuffer(float *inData, float *outData, int numFrames, double curTime);
 
-    void Start(void);
-    void Stop(void);
+    void HandleEvent(Event *event);
+    
+    //void Start(void);
+    //void Stop(void);
     
 public:
     int SampleRate;
