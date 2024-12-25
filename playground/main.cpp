@@ -11,7 +11,7 @@
 
 //#include <cstdio>
 #include "3rdparty/portaudio.h"
-
+#include "core/Scene.hpp"
 #include "core/SoundObject.hpp"
 
 #define NUM_SECONDS   (5)
@@ -21,11 +21,12 @@
 class PaWrapper
 {
 public:
-    PaWrapper() : stream(0), object(SAMPLE_RATE, 2)
+    PaWrapper() : stream(0)
     {
+        scene = new Scene(SAMPLE_RATE, 2);
     }
 
-    SoundObject* GetObject(void) { return &object; }
+    Scene* GetScene(void) { return scene; }
     
     bool open(PaDeviceIndex index)
     {
@@ -114,7 +115,7 @@ private:
     {
         (void) statusFlags;
 
-        object.ProcessBuffer((float *)inData, (float *)outData, (int)numFrames, timeInfo->currentTime);
+        scene->ProcessBuffer((float *)inData, (float *)outData, (int)numFrames, timeInfo->currentTime);
         return paContinue;
     }
 
@@ -142,7 +143,7 @@ private:
     }
 
     PaStream *stream;
-    SoundObject object;
+    Scene *scene;
 };
 
 
@@ -158,6 +159,7 @@ int main(int argc, char* argv[])
         return 1;
     }
 
+    wrapper.GetScene()->CreateBuildingBlock("SoundObject", "sin1");
     if (wrapper.open(Pa_GetDefaultOutputDevice()))
     {
         if (wrapper.start())
@@ -168,9 +170,9 @@ int main(int argc, char* argv[])
             {
                 ch = getchar();
                 if(ch == 'a')
-                    wrapper.GetObject()->Start();
+                    wrapper.GetScene()->Start();
                 if(ch == 's')
-                    wrapper.GetObject()->Stop();
+                    wrapper.GetScene()->Stop();
             }
 
             wrapper.stop();

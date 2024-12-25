@@ -8,11 +8,15 @@
 #include <string.h>
 #include "SoundObject.hpp"
 
-SoundObject::SoundObject(int _rate, int _channels)
+BuildingBlock::BuildingBlock(Scene *_parent, char const *_name)
 {
-    SampleRate = _rate;
-    NumChannels = _channels;
-    
+    parentScene = _parent;
+    strcpy(name, _name);
+}
+
+SoundObject::SoundObject(Scene *_parent, char const *_name)
+    : BuildingBlock(_parent, _name)
+{
     /* initialise sinusoidal wavetable */
     for( int i=0; i<TABLE_SIZE; i++ )
     {

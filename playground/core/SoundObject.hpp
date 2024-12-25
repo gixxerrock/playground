@@ -6,10 +6,24 @@
 //
 #pragma once
 
-class SoundObject
+class Scene;
+
+class BuildingBlock
 {
 public:
-    SoundObject(int _rate, int _channels);
+    BuildingBlock(Scene *_parent, char const *_name);
+
+protected:
+    Scene *parentScene;
+
+private:
+    char name[256];
+};
+
+class SoundObject : public BuildingBlock
+{
+public:
+    SoundObject(Scene *_parent, char const *_name);
     ~SoundObject() { }
     
     void Start() { state = 1; }
@@ -18,8 +32,6 @@ public:
     void ProcessBuffer(float *inData, float *outData, int numFrames, double curTime);
     
 protected:
-    int SampleRate;
-    int NumChannels;
     int state;              /* 0 - stopped  1 - playing */
     
     static constexpr int TABLE_SIZE = 2048;
