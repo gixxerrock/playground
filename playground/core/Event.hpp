@@ -11,8 +11,9 @@ struct Event
 {
     enum
     {
-        NoteOn = 0,
-        NoteOff = 1
+        NoteOn,
+        NoteOff,
+        Stop
     };
     
     uint8_t     type;

@@ -18,7 +18,7 @@ SoundObject::SoundObject(Scene *_parent, char const *_name)
     : BuildingBlock(_parent, _name)
 {
     /* initialise sinusoidal wavetable */
-    for( int i=0; i<TABLE_SIZE; i++ )
+    for( uint32_t i = 0; i < TABLE_SIZE; i++ )
     {
         sine[i] = (float) sin( 2.0 * ((double)i/(double)TABLE_SIZE) * M_PI * 2. );
     }
@@ -36,7 +36,7 @@ void SoundObject::ProcessBuffer(float *inData, float *outData, int numFrames, do
         return;
     }
     
-    for( int i=0; i<numFrames; i++ )
+    for( uint32_t i = 0; i < numFrames; i++ )
     {
         *outData++ = sine[leftPhase];
         *outData++ = sine[rightPhase];

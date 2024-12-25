@@ -8,7 +8,7 @@
 #include "SoundObject.hpp"
 #include "Event.hpp"
 
-Scene::Scene(int _rate, int _channels)
+Scene::Scene(uint32_t _rate, uint8_t _channels)
 {
     SampleRate = _rate;
     NumChannels = _channels;
@@ -48,7 +48,7 @@ void Scene::HandleEvent(Event *event)
     }
 }
 
-void Scene::ProcessBuffer(float *inData, float *outData, int numFrames, double curTime)
+void Scene::ProcessBuffer(float *inData, float *outData, uint32_t numFrames, double curTime)
 {
     for(auto o : soundObjectList)
     {

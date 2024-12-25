@@ -5,6 +5,7 @@
 //  Created by Shawn Best on 2024-12-23.
 //
 #pragma once
+#include <stdint.h>
 #include <vector>
 
 class BuildingBlock;
@@ -13,22 +14,19 @@ class Event;
 class Scene
 {
 public:
-    Scene(int _rate, int _channels);
+    Scene(uint32_t _rate, uint8_t _channels);
     ~Scene() {}
     
     void CreateBuildingBlock(char const *type, char const *name);
     void SetParameter(char const *name, char const *parameter, void *value);
 
-    void ProcessBuffer(float *inData, float *outData, int numFrames, double curTime);
+    void ProcessBuffer(float *inData, float *outData, uint32_t numFrames, double curTime);
 
     void HandleEvent(Event *event);
     
-    //void Start(void);
-    //void Stop(void);
-    
 public:
-    int SampleRate;
-    int NumChannels;
+    uint32_t SampleRate;
+    uint8_t NumChannels;
     
 private:
     std::vector<BuildingBlock *> buildingBlockList;    
