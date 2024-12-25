@@ -7,6 +7,7 @@
 #pragma once
 
 class Scene;
+class Event;
 
 class BuildingBlock
 {
@@ -26,13 +27,13 @@ public:
     SoundObject(Scene *_parent, char const *_name);
     ~SoundObject() { }
     
-    void Start() { state = 1; }
-    void Stop() { state = 0; }
+    void HandleEvent(Event *event);
     
     void ProcessBuffer(float *inData, float *outData, int numFrames, double curTime);
     
 protected:
-    uint8_t state;              /* 0 - stopped  1 - playing */
+    uint8_t state;              // 0 - stopped  1 - playing
+    float   velocity;           // 0 - 1.0
     
     static constexpr int TABLE_SIZE = 2048;
     

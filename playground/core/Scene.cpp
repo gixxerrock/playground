@@ -20,6 +20,7 @@ void Scene::CreateBuildingBlock(char const *type, char const *name)
     buildingBlockList.push_back(blk);
     soundObjectList.push_back((SoundObject*)blk);
 }
+
 void Scene::SetParameter(char const *name, char const *parameter, void *value)
 {
     // TODO:
@@ -27,24 +28,8 @@ void Scene::SetParameter(char const *name, char const *parameter, void *value)
 
 void Scene::HandleEvent(Event *event)
 {
-    switch(event->type)
-    {
-        case(Event::NoteOn):
-        {
-            for(auto o : soundObjectList) {
-                o->Start();
-            }
-            break;
-        }
-        case(Event::NoteOff):
-        {
-            for(auto o : soundObjectList) {
-                o->Stop();
-            }
-            break;
-        }
-            
-        
+    for(auto o : soundObjectList) {
+        o->HandleEvent(event);
     }
 }
 

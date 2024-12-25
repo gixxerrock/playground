@@ -6,6 +6,9 @@
 //
 #include <math.h>
 #include <string.h>
+#include <assert.h>
+#include "Scene.hpp"
+#include "Event.hpp"
 #include "SoundObject.hpp"
 
 BuildingBlock::BuildingBlock(Scene *_parent, char const *_name)
@@ -26,6 +29,23 @@ SoundObject::SoundObject(Scene *_parent, char const *_name)
     rightPhase = 0;
     lastTime = 0;
     state = 0;
+}
+
+void SoundObject::HandleEvent(Event *event)
+{
+    switch(event->type)
+    {
+        case(Event::NoteOn):
+            state = 1;
+            break;
+        
+        case(Event::NoteOff):
+            state = 0;
+            break;
+
+        default:
+            assert(0);
+    }
 }
 
 void SoundObject::ProcessBuffer(float *inData, float *outData, int numFrames, double curTime)

@@ -161,6 +161,7 @@ int main(int argc, char* argv[])
     }
 
     wrapper.GetScene()->CreateBuildingBlock("SoundObject", "sin1");
+    
     if (wrapper.open(Pa_GetDefaultOutputDevice()))
     {
         if (wrapper.start())
@@ -172,13 +173,13 @@ int main(int argc, char* argv[])
                 ch = getchar();
                 if(ch == 'a')
                 {
-                    Event event(Event::NoteOn, 0);
+                    NoteOnEvent event(0, 64, 255);
                     wrapper.GetScene()->HandleEvent(&event);
                 }
                 
                 if(ch == 's')
                 {
-                    Event event(Event::NoteOff, 0);
+                    NoteOffEvent event(0, 64);
                     wrapper.GetScene()->HandleEvent(&event);
                 }
             }

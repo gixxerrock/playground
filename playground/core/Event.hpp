@@ -12,8 +12,7 @@ struct Event
     enum
     {
         NoteOn,
-        NoteOff,
-        Stop
+        NoteOff
     };
     
     uint8_t     type;
@@ -26,12 +25,12 @@ struct Event
     }
 };
 
-struct NoteOn : public Event
+struct NoteOnEvent : public Event
 {
     uint8_t pitch;      // midi pitch mapping
     uint8_t velocity;
     
-    NoteOn(uint8_t _channel, uint8_t _pitch, uint8_t _velocity) :
+    NoteOnEvent(uint8_t _channel, uint8_t _pitch, uint8_t _velocity) :
         Event( Event::NoteOn, _channel)
     {
         pitch = _pitch;
@@ -39,11 +38,11 @@ struct NoteOn : public Event
     }
 };
 
-struct NoteOff : public Event
+struct NoteOffEvent : public Event
 {
     uint8_t pitch;      // midi pitch mapping
     
-    NoteOff(uint8_t _channel, uint8_t _pitch) :
+    NoteOffEvent(uint8_t _channel, uint8_t _pitch) :
         Event( Event::NoteOff, _channel)
     {
         pitch = _pitch;
