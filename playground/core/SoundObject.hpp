@@ -15,6 +15,10 @@ public:
     BuildingBlock(Scene *_parent, char const *_name);
 
 protected:
+    // handy constants
+    uint32_t sampleRate;
+    float sampleTime;
+    
     Scene *parentScene;
 
 private:
@@ -27,18 +31,35 @@ public:
     SoundObject(Scene *_parent, char const *_name);
     ~SoundObject() { }
     
-    void HandleEvent(Event *event);
+    virtual void HandleEvent(Event *event, double time) { }
     
-    void ProcessBuffer(float *inData, float *outData, int numFrames, double curTime);
+    virtual void ProcessBuffer(float *inData, float *outData, int numFrames, double curTime) = 0;
     
 protected:
-    uint8_t state;              // 0 - stopped  1 - playing
-    float   velocity;           // 0 - 1.0
     
+    uint8_t state;              // 0 - stopped  1 - playing
+    uint8_t midiPitch;              // midi pitch
+    uint8_t midiVelocity;
+    
+    double noteStartTime;
+    double lastBufferTime;
+};
+
+class SineGenerator : public SoundObject
+{
+public:
+    SineGenerator(Scene *_parent, char const *_name);
+    
+    void HandleEvent(Event *event, double time);
+    void ProcessBuffer(float *inData, float *outData, int numFrames, double curTime);
+
+private:
     static constexpr int TABLE_SIZE = 2048;
     
     float sine[TABLE_SIZE];
     uint32_t leftPhase;
     uint32_t rightPhase;
-    double lastTime;
+    
+    float freqScale;
+    float ampScale;
 };

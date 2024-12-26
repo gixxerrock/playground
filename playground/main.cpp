@@ -111,6 +111,11 @@ public:
         return (err == paNoError);
     }
 
+    PaTime time()
+    {
+        return Pa_GetStreamTime( stream );
+    }
+
 private:
     int paCallbackMethod(const void *inData, void *outData, unsigned long numFrames, const PaStreamCallbackTimeInfo* timeInfo, PaStreamCallbackFlags statusFlags)
     {
@@ -168,19 +173,20 @@ int main(int argc, char* argv[])
         {
             printf(" hacky temp polling loop.... hit x<Enter> to break a s start/stop \n");
             char ch = 0;
+            uint8_t pitch = 20;
             while(ch != 'x')
             {
                 ch = getchar();
                 if(ch == 'a')
                 {
-                    NoteOnEvent event(0, 64, 255);
-                    wrapper.GetScene()->HandleEvent(&event);
+                    NoteOnEvent event(0, ++pitch, 64);
+                    wrapper.GetScene()->HandleEvent(&event, (double)wrapper.time());
                 }
                 
                 if(ch == 's')
                 {
-                    NoteOffEvent event(0, 64);
-                    wrapper.GetScene()->HandleEvent(&event);
+                    NoteOffEvent event(0, pitch);
+                    wrapper.GetScene()->HandleEvent(&event, (double)wrapper.time());
                 }
             }
 
