@@ -20,6 +20,8 @@
 *.tar
 *.zip
 
+*.vscode
+
 # Logs and databases #
 ######################
 *.log

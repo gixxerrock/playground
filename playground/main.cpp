@@ -9,7 +9,6 @@
 //--------------------------------
 #include <stdio.h>
 
-//#include <cstdio>
 #include "3rdparty/portaudio.h"
 #include "core/Scene.hpp"
 #include "core/Event.hpp"
