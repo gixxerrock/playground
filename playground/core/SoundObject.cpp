@@ -28,7 +28,7 @@ SoundObject::SoundObject(Scene *_parent, char const *_name)
     lastBufferTime = 0;
 }
 
-SineGenerator::SineGenerator(Scene *_parent, char const *_name) : 
+SineGenerator_x::SineGenerator_x(Scene *_parent, char const *_name) :
     SoundObject(_parent, _name)
 {
     /* initialise sinusoidal wavetable */
@@ -41,7 +41,7 @@ SineGenerator::SineGenerator(Scene *_parent, char const *_name) :
     freqScale = 1.0;
 }
 
-void SineGenerator::HandleEvent(Event *event, double time)
+void SineGenerator_x::HandleEvent(Event *event, double time)
 {
     switch(event->type)
     {
@@ -63,7 +63,7 @@ void SineGenerator::HandleEvent(Event *event, double time)
     }
 }
 
-void SineGenerator::ProcessBuffer(float *inData, float *outData, int numFrames, double curTime)
+void SineGenerator_x::ProcessBuffer(float *inData, float *outData, int numFrames, double curTime)
 {
     if(state == 0)
     {

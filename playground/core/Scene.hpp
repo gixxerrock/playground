@@ -11,6 +11,7 @@
 class BuildingBlock;
 class SoundObject;
 class Event;
+class Component;
 
 class Scene
 {
@@ -22,6 +23,10 @@ public:
     float GetTempo(void) { return tempo; }              // current tempo in bpm
     uint32_t GetMaxFrames(void) { return 512; }         // max number of samples in buffer
     
+    void CreateComponent(char const *type, char const *name);
+
+    void ConnectOutput(char const *compName, char const *outName, uint8_t channel);
+
     void CreateBuildingBlock(char const *type, char const *name);
     void SetParameter(char const *name, char const *parameter, void *value);
 
@@ -30,10 +35,12 @@ public:
     void HandleEvent(Event *event, double time);
 
     // usefull utility functions
+    float MidiNoteTable[128];
     float MidiNoteToHz(uint8_t n) { return MidiNoteTable[n]; }
 
 public:
     uint32_t SampleRate;
+    float SampleTime;
     uint8_t NumChannels;
     
     float tempo;
@@ -41,6 +48,10 @@ public:
 private:
     std::vector<BuildingBlock *> buildingBlockList;    
     std::vector<SoundObject*> soundObjectList;
+    
+    std::vector<Component*> componentList;
 
-    float MidiNoteTable[128];
+    // outputs (per tick) from a Component
+    float outputCh0;
+    float outputCh1;
 };

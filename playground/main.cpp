@@ -26,7 +26,7 @@ public:
     {
         scene = new Scene(SAMPLE_RATE, 2);
     }
-
+    
     Scene* GetScene(void) { return scene; }
     
     bool open(PaDeviceIndex index)
@@ -152,6 +152,14 @@ private:
     Scene *scene;
 };
 
+void InitScene(Scene* scene)
+{
+    //scene->CreateBuildingBlock("SoundObject", "sin1");
+    scene->CreateComponent("SineGenerator", "sin1");
+
+    scene->ConnectOutput("sin1", "outputLeft", 0);
+    scene->ConnectOutput("sin1", "outputRight", 1);
+}
 
 int main(int argc, char* argv[])
 {
@@ -165,7 +173,7 @@ int main(int argc, char* argv[])
         return 1;
     }
 
-    wrapper.GetScene()->CreateBuildingBlock("SoundObject", "sin1");
+    InitScene(wrapper.GetScene());
     
     if (wrapper.open(Pa_GetDefaultOutputDevice()))
     {

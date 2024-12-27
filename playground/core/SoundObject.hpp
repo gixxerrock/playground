@@ -45,10 +45,10 @@ protected:
     double lastBufferTime;
 };
 
-class SineGenerator : public SoundObject
+class SineGenerator_x : public SoundObject
 {
 public:
-    SineGenerator(Scene *_parent, char const *_name);
+    SineGenerator_x(Scene *_parent, char const *_name);
     
     void HandleEvent(Event *event, double time);
     void ProcessBuffer(float *inData, float *outData, int numFrames, double curTime);
