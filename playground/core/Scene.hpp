@@ -24,11 +24,9 @@ public:
     uint32_t GetMaxFrames(void) { return 512; }         // max number of samples in buffer
     
     void CreateComponent(char const *type, char const *name);
+    void SetParameter(char const *name, char const *parameter, void *value);
 
     void ConnectOutput(char const *compName, char const *outName, uint8_t channel);
-
-    void CreateBuildingBlock(char const *type, char const *name);
-    void SetParameter(char const *name, char const *parameter, void *value);
 
     void ProcessBuffer(float *inData, float *outData, uint32_t numFrames, double curTime);
 
@@ -46,9 +44,6 @@ public:
     float tempo;
     
 private:
-    std::vector<BuildingBlock *> buildingBlockList;    
-    std::vector<SoundObject*> soundObjectList;
-    
     std::vector<Component*> componentList;
 
     // outputs (per tick) from a Component

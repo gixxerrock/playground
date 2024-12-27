@@ -13,7 +13,6 @@
 #include "3rdparty/portaudio.h"
 #include "core/Scene.hpp"
 #include "core/Event.hpp"
-#include "core/SoundObject.hpp"
 
 #define NUM_SECONDS   (5)
 #define SAMPLE_RATE   (44100)
@@ -154,7 +153,6 @@ private:
 
 void InitScene(Scene* scene)
 {
-    //scene->CreateBuildingBlock("SoundObject", "sin1");
     scene->CreateComponent("SineGenerator", "sin1");
 
     scene->ConnectOutput("sin1", "outputLeft", 0);

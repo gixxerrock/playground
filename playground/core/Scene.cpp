@@ -7,7 +7,6 @@
 #include "Scene.hpp"
 #include "Component.hpp"
 #include "SineGenerator.hpp"
-#include "SoundObject.hpp"
 #include "Event.hpp"
 
 Scene::Scene(uint32_t _rate, uint8_t _channels)
@@ -25,13 +24,6 @@ Scene::Scene(uint32_t _rate, uint8_t _channels)
     
     outputCh0 = 0.0;
     outputCh1 = 0.0;
-}
-
-void Scene::CreateBuildingBlock(char const *type, char const *name)
-{
-    BuildingBlock *blk = new SineGenerator_x(this, name);
-    buildingBlockList.push_back(blk);
-    soundObjectList.push_back((SoundObject*)blk);
 }
 
 void Scene::CreateComponent(char const *type, char const *name)
@@ -74,10 +66,6 @@ void Scene::SetParameter(char const *name, char const *parameter, void *value)
 
 void Scene::HandleEvent(Event *event, double time)
 {
-    for(auto o : soundObjectList) {
-        o->HandleEvent(event, time);
-    }
-
     for(auto c : componentList) {
         c->HandleEvent(event, time);
     }
@@ -85,25 +73,18 @@ void Scene::HandleEvent(Event *event, double time)
 
 void Scene::ProcessBuffer(float *inData, float *outData, uint32_t numFrames, double curTime)
 {
-    if(0)
-    {
-        for(auto o : soundObjectList) {
-            o->ProcessBuffer(inData, outData, numFrames, curTime);
-        }
-    } else 
-    {
-        float *pOut = outData;
-        for(auto i = 0; i < numFrames; i++)
-        {
-            double time = curTime + (i * SampleTime);
 
-            for(auto c : componentList){
-                c->UpdateTick(time);
-            }
+    float *pOut = outData;
+    for(auto i = 0; i < numFrames; i++)
+    {
+        double time = curTime + (i * SampleTime);
 
-            // all components have run, move output sample into buffer
-            *pOut++ = outputCh0;
-            *pOut++ = outputCh1;
+        for(auto c : componentList){
+            c->UpdateTick(time);
         }
+
+        // all components have run, move output sample into buffer
+        *pOut++ = outputCh0;
+        *pOut++ = outputCh1;
     }
 }
