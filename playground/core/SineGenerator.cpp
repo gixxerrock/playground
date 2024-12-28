@@ -46,7 +46,7 @@ void SineGenerator::HandleEvent(Event *event, double time)
             break;
         
         case(Event::NoteOff):
-            state = 0;
+            //state = 0;
             break;
 
         default:

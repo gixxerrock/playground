@@ -31,7 +31,6 @@ private:
     uint8_t midiVelocity;       // midi velocity
     
     double noteStartTime;
-    double lastBufferTime;
     float freqScale;
 
     // sin table

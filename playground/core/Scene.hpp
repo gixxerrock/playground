@@ -26,7 +26,8 @@ public:
     void CreateComponent(char const *type, char const *name);
     void SetParameter(char const *name, char const *parameter, void *value);
 
-    void ConnectOutput(char const *compName, char const *outName, uint8_t channel);
+    bool Connect(char const *srcCompName, char const *srcOutput, char const *dstCompName, char const *dstInput);
+    bool ConnectOutput(char const *compName, char const *outName, uint8_t channel);
 
     void ProcessBuffer(float *inData, float *outData, uint32_t numFrames, double curTime);
 

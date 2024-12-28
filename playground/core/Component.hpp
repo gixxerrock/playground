@@ -33,7 +33,7 @@ public:
     Component(Scene *_parent, char const *_name);
     ~Component() {}
 
-    ComponentIO* GetInput(char *name);
+    ComponentIO* GetInput(const char *name);
     bool SetOutput(const char *name, ComponentIO *out);
 
     virtual void HandleEvent(Event *event, double time) { }

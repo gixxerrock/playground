@@ -27,7 +27,7 @@ Component::Component(Scene *_parent, char const *_name)
     sampleTime = 1.0/sampleRate;
 }
 
-ComponentIO* Component::GetInput(char *name)
+ComponentIO* Component::GetInput(const char *name)
 {
     for (auto &i : inputList)
     {

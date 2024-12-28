@@ -6,8 +6,9 @@
 //
 #include "Scene.hpp"
 #include "Component.hpp"
-#include "SineGenerator.hpp"
 #include "Event.hpp"
+#include "SineGenerator.hpp"
+#include "Envelope.hpp"
 
 Scene::Scene(uint32_t _rate, uint8_t _channels)
 {
@@ -33,9 +34,14 @@ void Scene::CreateComponent(char const *type, char const *name)
         Component *comp = new SineGenerator(this, name);
         componentList.push_back(comp);
     }
+    else if(strcmp(type, "Envelope") == 0)
+    {
+        Component *comp = new Envelope(this, name);
+        componentList.push_back(comp);
+    }
 }
 
-void Scene::ConnectOutput(char const *compName, char const *outName, uint8_t channel)
+bool Scene::ConnectOutput(char const *compName, char const *outName, uint8_t channel)
 {
     for (auto c : componentList) 
     {
@@ -54,9 +60,35 @@ void Scene::ConnectOutput(char const *compName, char const *outName, uint8_t cha
 
                 c->SetOutput(outName, &compIo);
             }
-            break;
+            return true;
         }
     }
+    return false;
+}
+
+bool Scene::Connect(char const *srcCompName, char const *srcOutput, char const *dstCompName, char const *dstInput)
+{
+    Component *srcComp = nullptr;
+    Component *dstComp = nullptr;
+
+    for (auto c : componentList) 
+    {
+        if ( strcmp(srcCompName, c->name) == 0) {
+            srcComp = c;
+        }
+        if ( strcmp(dstCompName, c->name) == 0) {
+            dstComp = c;
+        }
+    }
+
+    // check if couldn't make connection
+    if ( !(srcComp && dstComp) ) {
+        return false;
+    }
+
+    ComponentIO* dstIO = dstComp->GetInput(dstInput);
+
+    return srcComp->SetOutput(srcOutput, dstIO);
 }
 
 void Scene::SetParameter(char const *name, char const *parameter, void *value)

@@ -152,9 +152,13 @@ private:
 void InitScene(Scene* scene)
 {
     scene->CreateComponent("SineGenerator", "sin1");
+    scene->CreateComponent("Envelope", "adsr1");
 
-    scene->ConnectOutput("sin1", "outputLeft", 0);
-    scene->ConnectOutput("sin1", "outputRight", 1);
+    scene->Connect("sin1", "outputLeft", "adsr1", "inputLeft");
+    scene->Connect("sin1", "outputRight", "adsr1", "inputRight");
+
+    scene->ConnectOutput("adsr1", "outputLeft", 0);
+    scene->ConnectOutput("adsr1", "outputRight", 1);
 }
 
 int main(int argc, char* argv[])
@@ -183,7 +187,7 @@ int main(int argc, char* argv[])
                 ch = getchar();
                 if(ch == 'a')
                 {
-                    NoteOnEvent event(0, ++pitch, 64);
+                    NoteOnEvent event(0, ++pitch, 164);
                     wrapper.GetScene()->HandleEvent(&event, (double)wrapper.time());
                 }
                 
