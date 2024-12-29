@@ -21,6 +21,7 @@ private:
     // inputs
     float amplitudeScale;   // amplitude 0..1
     float freqOffset;       // +- Hz to tune oscillator
+    float freqRatio;        // 1.0
     
     // outputs
     float *outputLeft;

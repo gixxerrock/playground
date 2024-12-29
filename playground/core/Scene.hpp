@@ -21,10 +21,9 @@ public:
     ~Scene() {}
     
     float GetTempo(void) { return tempo; }              // current tempo in bpm
-    uint32_t GetMaxFrames(void) { return 512; }         // max number of samples in buffer
     
     void CreateComponent(char const *type, char const *name);
-    void SetParameter(char const *name, char const *parameter, void *value);
+    bool SetParameter(char const *name, char const *parameter, void *value);
 
     bool Connect(char const *srcCompName, char const *srcOutput, char const *dstCompName, char const *dstInput);
     bool ConnectOutput(char const *compName, char const *outName, uint8_t channel);

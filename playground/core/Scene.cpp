@@ -91,9 +91,18 @@ bool Scene::Connect(char const *srcCompName, char const *srcOutput, char const *
     return srcComp->SetOutput(srcOutput, dstIO);
 }
 
-void Scene::SetParameter(char const *name, char const *parameter, void *value)
+bool Scene::SetParameter(char const *name, char const *parameter, void *value)
 {
-    // TODO:
+    for (auto c : componentList) 
+    {
+        if ( strcmp(name, c->name) == 0) {
+            if (c->SetParameter(parameter, value)) {
+                return true;
+            }
+            return false;
+        }
+    }
+    return false;
 }
 
 void Scene::HandleEvent(Event *event, double time)

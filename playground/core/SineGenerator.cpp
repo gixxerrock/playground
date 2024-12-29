@@ -20,6 +20,7 @@ SineGenerator::SineGenerator(Scene *_parent, char const *_name) : Component(_par
     freqScale = 1.0;
     amplitudeScale = 1.0f;
     freqOffset = 0.0;
+    freqRatio = 1.0;
     
     outputLeft = nullptr;
     outputRight = nullptr;
@@ -27,6 +28,7 @@ SineGenerator::SineGenerator(Scene *_parent, char const *_name) : Component(_par
     // expose parameters
     inputList.push_back( ComponentIO("amplitudeScale", &amplitudeScale, "Float" ) );
     inputList.push_back( ComponentIO("freqOffset", &freqOffset, "Float" ) );
+    inputList.push_back( ComponentIO("freqRatio", &freqRatio, "Float" ) );
     
     outputList.push_back( ComponentIO("outputLeft", &outputLeft, "Float") );
     outputList.push_back( ComponentIO("outputRight", &outputRight, "Float") );
@@ -70,7 +72,7 @@ void SineGenerator::UpdateTick(double time)
     float offsTime = time - noteStartTime;
 
     uint32_t leftPhase = (uint32_t)((offsTime * freqScale * 1.0) / sampleTime) % TABLE_SIZE;;
-    uint32_t rightPhase = (uint32_t)((offsTime * freqScale * 3.0) / sampleTime) % TABLE_SIZE;;
+    uint32_t rightPhase = (uint32_t)((offsTime * freqScale * freqRatio) / sampleTime) % TABLE_SIZE;;
 
     *outputLeft = amplitudeScale * sine[leftPhase];
     *outputRight = amplitudeScale * sine[rightPhase];

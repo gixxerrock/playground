@@ -34,6 +34,7 @@ public:
     ~Component() {}
 
     ComponentIO* GetInput(const char *name);
+    bool SetParameter(const char *name, void *value);
     bool SetOutput(const char *name, ComponentIO *out);
 
     virtual void HandleEvent(Event *event, double time) { }

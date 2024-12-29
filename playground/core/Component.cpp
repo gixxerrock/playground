@@ -38,6 +38,17 @@ ComponentIO* Component::GetInput(const char *name)
     return nullptr;
 }
 
+bool Component::SetParameter(const char *name, void *value)
+{
+    ComponentIO* comp = GetInput(name);
+    if (!comp) {
+        return false;
+    }
+
+    *((float *)comp->pData) = *((float *)value);
+    return true;
+}
+
 // find named output in this comonent and set pointer
 bool Component::SetOutput(const char *name, ComponentIO *out)
 {

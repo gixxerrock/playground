@@ -181,7 +181,8 @@ int main(int argc, char* argv[])
         {
             printf(" hacky temp polling loop.... hit x<Enter> to break a s start/stop \n");
             char ch = 0;
-            uint8_t pitch = 20;
+            uint8_t pitch = 32;
+            float freqRatio = 1.0;
             while(ch != 'x')
             {
                 ch = getchar();
@@ -195,6 +196,12 @@ int main(int argc, char* argv[])
                 {
                     NoteOffEvent event(0, pitch);
                     wrapper.GetScene()->HandleEvent(&event, (double)wrapper.time());
+                }
+
+                if (ch == 'd')
+                {
+                    freqRatio += 0.2;
+                    wrapper.GetScene()->SetParameter("sin1", "freqRatio", &freqRatio);
                 }
             }
 
