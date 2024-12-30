@@ -27,18 +27,21 @@ Scene::Scene(uint32_t _rate, uint8_t _channels)
     outputCh1 = 0.0;
 }
 
-void Scene::CreateComponent(char const *type, char const *name)
+bool Scene::CreateComponent(char const *type, char const *name)
 {
     if(strcmp(type, "SineGenerator") == 0)
     {
         Component *comp = new SineGenerator(this, name);
         componentList.push_back(comp);
+        return true;
     }
     else if(strcmp(type, "Envelope") == 0)
     {
         Component *comp = new Envelope(this, name);
         componentList.push_back(comp);
+        return true;
     }
+    return false;
 }
 
 bool Scene::ConnectOutput(char const *compName, char const *outName, uint8_t channel)

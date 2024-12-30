@@ -10,21 +10,25 @@
 #include <stdio.h>
 
 #include "3rdparty/portaudio.h"
+#include "CommandProcessor.hpp"
 #include "core/Scene.hpp"
 #include "core/Event.hpp"
 
 #define SAMPLE_RATE   (44100)
 #define FRAMES_PER_BUFFER  (64)
 
+Scene* gScene = nullptr;
+CommandProcessor *gCmdProc = nullptr;
+
 class PaWrapper
 {
 public:
     PaWrapper() : stream(0)
     {
-        scene = new Scene(SAMPLE_RATE, 2);
+        
     }
     
-    Scene* GetScene(void) { return scene; }
+    //Scene* GetScene(void) { return scene; }
     
     bool open(PaDeviceIndex index)
     {
@@ -118,7 +122,7 @@ private:
     {
         (void) statusFlags;
 
-        scene->ProcessBuffer((float *)inData, (float *)outData, (int)numFrames, timeInfo->currentTime);
+        gScene->ProcessBuffer((float *)inData, (float *)outData, (int)numFrames, timeInfo->currentTime);
         return paContinue;
     }
 
@@ -146,19 +150,28 @@ private:
     }
 
     PaStream *stream;
-    Scene *scene;
+    //Scene *scene;
 };
 
-void InitScene(Scene* scene)
+void InitScene(void)
 {
-    scene->CreateComponent("SineGenerator", "sin1");
-    scene->CreateComponent("Envelope", "adsr1");
+    gScene = new Scene(SAMPLE_RATE, 2);
+    gCmdProc = new CommandProcessor(gScene);
 
-    scene->Connect("sin1", "outputLeft", "adsr1", "inputLeft");
-    scene->Connect("sin1", "outputRight", "adsr1", "inputRight");
+    gCmdProc->ProcessCommandString("create SineGenerator sin1");
+    gCmdProc->ProcessCommandString("create Envelope adsr1");
 
-    scene->ConnectOutput("adsr1", "outputLeft", 0);
-    scene->ConnectOutput("adsr1", "outputRight", 1);
+    gCmdProc->ProcessCommandString("connect sin1 outputLeft adsr1 inputLeft");
+    gCmdProc->ProcessCommandString("connect sin1 outputRight adsr1 inputRight");
+    //scene->CreateComponent("SineGenerator", "sin1");
+    //scene->CreateComponent("Envelope", "adsr1");
+
+    //scene->Connect("sin1", "outputLeft", "adsr1", "inputLeft");
+    //scene->Connect("sin1", "outputRight", "adsr1", "inputRight");
+
+    // TODO:
+    gScene->ConnectOutput("adsr1", "outputLeft", 0);
+    gScene->ConnectOutput("adsr1", "outputRight", 1);
 }
 
 int main(int argc, char* argv[])
@@ -173,7 +186,7 @@ int main(int argc, char* argv[])
         return 1;
     }
 
-    InitScene(wrapper.GetScene());
+    InitScene();
     
     if (wrapper.open(Pa_GetDefaultOutputDevice()))
     {
@@ -189,19 +202,19 @@ int main(int argc, char* argv[])
                 if(ch == 'a')
                 {
                     NoteOnEvent event(0, ++pitch, 164);
-                    wrapper.GetScene()->HandleEvent(&event, (double)wrapper.time());
+                    gScene->HandleEvent(&event, (double)wrapper.time());
                 }
                 
                 if(ch == 's')
                 {
                     NoteOffEvent event(0, pitch);
-                    wrapper.GetScene()->HandleEvent(&event, (double)wrapper.time());
+                    gScene->HandleEvent(&event, (double)wrapper.time());
                 }
 
                 if (ch == 'd')
                 {
                     freqRatio += 0.2;
-                    wrapper.GetScene()->SetParameter("sin1", "freqRatio", &freqRatio);
+                    gScene->SetParameter("sin1", "freqRatio", &freqRatio);
                 }
             }
 

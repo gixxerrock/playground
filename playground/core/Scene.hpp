@@ -22,7 +22,7 @@ public:
     
     float GetTempo(void) { return tempo; }              // current tempo in bpm
     
-    void CreateComponent(char const *type, char const *name);
+    bool CreateComponent(char const *type, char const *name);
     bool SetParameter(char const *name, char const *parameter, void *value);
 
     bool Connect(char const *srcCompName, char const *srcOutput, char const *dstCompName, char const *dstInput);
