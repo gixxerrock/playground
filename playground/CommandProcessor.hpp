@@ -13,7 +13,7 @@ class CommandProcessor
 public:
     CommandProcessor(Scene *_scene);
 
-    bool ProcessCommandString(const char *cmdStr);
+    bool ProcessCommandString(const char *cmdStr, double time = 0);
 
 private:
     Scene *scene;

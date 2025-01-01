@@ -24,7 +24,7 @@ CommandProcessor::CommandProcessor(Scene *_scene)
     scene = _scene;
 }
 
-bool CommandProcessor::ProcessCommandString(const char *cmdStr)
+bool CommandProcessor::ProcessCommandString(const char *cmdStr, double time)
 {
     char a1[64];
     char a2[64];
@@ -46,6 +46,40 @@ bool CommandProcessor::ProcessCommandString(const char *cmdStr)
             return false;
         }
         return scene->Connect(a2, a3, a4, a5);
+    }
+    else if (strncmp(a1, "event", 5) == 0)
+    {
+        if (strncmp(a2, "NoteOn", 6) == 0)
+        {
+            int channel = 0;
+            int pitch = 0;
+            int velocity = 64;
+            sscanf(a3," %d", &channel);
+            sscanf(a4," %d", &pitch);
+            sscanf(a5," %d", &velocity);
+            NoteOnEvent event((uint8_t)channel, (uint8_t)pitch, (uint8_t)velocity);
+
+            scene->HandleEvent(&event, time);
+            return true;
+        }
+        else if (strncmp(a2, "NoteOff", 7) == 0)
+        {
+            int channel = 0;
+            int pitch = 0;
+            sscanf(a3," %d", &channel);
+            sscanf(a4," %d", &pitch);
+            NoteOffEvent event((uint8_t)channel, (uint8_t)pitch);
+
+            scene->HandleEvent(&event, time);
+            return true;
+        }
+    }
+    else if (strncmp(a1, "param", 5) == 0)
+    {
+        float value;
+        sscanf(a4, "%f", &value);
+
+        return scene->SetParameter(a2, a3, &value);
     }
     return false;
 }

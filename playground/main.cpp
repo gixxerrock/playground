@@ -194,27 +194,20 @@ int main(int argc, char* argv[])
         {
             printf(" hacky temp polling loop.... hit x<Enter> to break a s start/stop \n");
             char ch = 0;
-            uint8_t pitch = 32;
-            float freqRatio = 1.0;
+
             while(ch != 'x')
             {
                 ch = getchar();
-                if(ch == 'a')
-                {
-                    NoteOnEvent event(0, ++pitch, 164);
-                    gScene->HandleEvent(&event, (double)wrapper.time());
+                if(ch == 'a') {
+                    gCmdProc->ProcessCommandString("event NoteOn 0 32 164", wrapper.time() );
                 }
                 
-                if(ch == 's')
-                {
-                    NoteOffEvent event(0, pitch);
-                    gScene->HandleEvent(&event, (double)wrapper.time());
+                if(ch == 's') {
+                    gCmdProc->ProcessCommandString("event NoteOff 0 32", wrapper.time() );
                 }
 
-                if (ch == 'd')
-                {
-                    freqRatio += 0.2;
-                    gScene->SetParameter("sin1", "freqRatio", &freqRatio);
+                if (ch == 'd') {
+                    gCmdProc->ProcessCommandString("param sin1 freqRatio 1.05");
                 }
             }
 
