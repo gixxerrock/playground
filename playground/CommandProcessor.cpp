@@ -35,10 +35,15 @@ bool CommandProcessor::ProcessCommandString(const char *cmdStr, double time)
 
     if(strncmp(a1, "create", 6) == 0)
     {
-        if (numCmds != 3) {
+        if (numCmds < 3) {
             return false;
         }
-        return scene->CreateComponent(a2, a3);
+        else if (numCmds == 3) {
+            return scene->CreateComponent(a2, a3);
+        } else {
+            return scene->CreateComponent(a2, a3, a4);
+        }
+        
     }
     else if (strncmp(a1, "connect", 7) == 0)
     {

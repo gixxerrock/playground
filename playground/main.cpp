@@ -164,12 +164,18 @@ void InitScene(void)
     gCmdProc->ProcessCommandString("create Envelope adsr2");
 
     gCmdProc->ProcessCommandString("param sin2 freqRatio 3.0");
-
+    gCmdProc->ProcessCommandString("param sin2 amplitudeScale 0.6");
+    
     gCmdProc->ProcessCommandString("connect sin1 output1 adsr1 input1");
     gCmdProc->ProcessCommandString("connect sin2 output1 adsr2 input1");
 
     gScene->ConnectOutput("adsr1", "output1", 0);
     gScene->ConnectOutput("adsr2", "output1", 1);
+
+    // add lfo to sin1
+    gCmdProc->ProcessCommandString("create SineGenerator lfo1 0.5");
+    gCmdProc->ProcessCommandString("param lfo1 amplitudeScale 0.5");
+    gCmdProc->ProcessCommandString("connect lfo1 output1 sin1 amplitudeOffset");
 }
 
 int main(int argc, char* argv[])

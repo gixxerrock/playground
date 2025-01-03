@@ -27,11 +27,15 @@ Scene::Scene(uint32_t _rate, uint8_t _channels)
     outputCh1 = 0.0;
 }
 
-bool Scene::CreateComponent(char const *type, char const *name)
+bool Scene::CreateComponent(char const *type, char const *name, char const *arg1)
 {
     if(strcmp(type, "SineGenerator") == 0)
     {
-        Component *comp = new SineGenerator(this, name);
+        float freq = 0.0;
+        if(arg1) {
+            sscanf(arg1, "%f", &freq);
+        }
+        Component *comp = new SineGenerator(this, name, freq);
         componentList.push_back(comp);
         return true;
     }
