@@ -159,19 +159,17 @@ void InitScene(void)
     gCmdProc = new CommandProcessor(gScene);
 
     gCmdProc->ProcessCommandString("create SineGenerator sin1");
+    gCmdProc->ProcessCommandString("create SineGenerator sin2");
     gCmdProc->ProcessCommandString("create Envelope adsr1");
+    gCmdProc->ProcessCommandString("create Envelope adsr2");
 
-    gCmdProc->ProcessCommandString("connect sin1 outputLeft adsr1 inputLeft");
-    gCmdProc->ProcessCommandString("connect sin1 outputRight adsr1 inputRight");
-    //scene->CreateComponent("SineGenerator", "sin1");
-    //scene->CreateComponent("Envelope", "adsr1");
+    gCmdProc->ProcessCommandString("param sin2 freqRatio 3.0");
 
-    //scene->Connect("sin1", "outputLeft", "adsr1", "inputLeft");
-    //scene->Connect("sin1", "outputRight", "adsr1", "inputRight");
+    gCmdProc->ProcessCommandString("connect sin1 output1 adsr1 input1");
+    gCmdProc->ProcessCommandString("connect sin2 output1 adsr2 input1");
 
-    // TODO:
-    gScene->ConnectOutput("adsr1", "outputLeft", 0);
-    gScene->ConnectOutput("adsr1", "outputRight", 1);
+    gScene->ConnectOutput("adsr1", "output1", 0);
+    gScene->ConnectOutput("adsr2", "output1", 1);
 }
 
 int main(int argc, char* argv[])
@@ -199,11 +197,11 @@ int main(int argc, char* argv[])
             {
                 ch = getchar();
                 if(ch == 'a') {
-                    gCmdProc->ProcessCommandString("event NoteOn 0 32 164", wrapper.time() );
+                    gCmdProc->ProcessCommandString("event NoteOn 0 40 164", wrapper.time() );
                 }
                 
                 if(ch == 's') {
-                    gCmdProc->ProcessCommandString("event NoteOff 0 32", wrapper.time() );
+                    gCmdProc->ProcessCommandString("event NoteOff 40 69", wrapper.time() );
                 }
 
                 if (ch == 'd') {

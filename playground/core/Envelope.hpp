@@ -21,8 +21,7 @@ public:
 private:
     
     // inputs
-    float inputLeft;
-    float inputRight;
+    float input1;
 
     // note these are specified in seconds
     float attackTime;           // 0.001 .. 1.0
@@ -31,8 +30,7 @@ private:
     float releaseTime;          // 0.001 .. 1.0
     
     // outputs
-    float *outputLeft;
-    float *outputRight;
+    float *output1;
     
     uint32_t state; // 0:inactive 1:initial(AD) 2:sustain  3: release
     double noteStartTime;

@@ -22,16 +22,14 @@ SineGenerator::SineGenerator(Scene *_parent, char const *_name) : Component(_par
     freqOffset = 0.0;
     freqRatio = 1.0;
     
-    outputLeft = nullptr;
-    outputRight = nullptr;
+    output1 = nullptr;
     
     // expose parameters
     inputList.push_back( ComponentIO("amplitudeScale", &amplitudeScale, "Float" ) );
     inputList.push_back( ComponentIO("freqOffset", &freqOffset, "Float" ) );
     inputList.push_back( ComponentIO("freqRatio", &freqRatio, "Float" ) );
     
-    outputList.push_back( ComponentIO("outputLeft", &outputLeft, "Float") );
-    outputList.push_back( ComponentIO("outputRight", &outputRight, "Float") );
+    outputList.push_back( ComponentIO("output1", &output1, "Float") );
 }
 
 void SineGenerator::HandleEvent(Event *event, double time)
@@ -58,22 +56,18 @@ void SineGenerator::HandleEvent(Event *event, double time)
 
 void SineGenerator::UpdateTick(double time)
 {
-    assert(outputLeft);
-    assert(outputRight);
+    assert(output1);
 
     if(state == 0)
     {
-        *outputLeft = 0.0;
-        *outputRight = 0.0;
+        *output1 = 0.0;
         return;
     }
     
     // time from start of note
     float offsTime = time - noteStartTime;
 
-    uint32_t leftPhase = (uint32_t)((offsTime * freqScale * 1.0) / sampleTime) % TABLE_SIZE;;
-    uint32_t rightPhase = (uint32_t)((offsTime * freqScale * freqRatio) / sampleTime) % TABLE_SIZE;;
+    uint32_t phase = (uint32_t)((offsTime * freqScale * freqRatio) / sampleTime) % TABLE_SIZE;;
 
-    *outputLeft = amplitudeScale * sine[leftPhase];
-    *outputRight = amplitudeScale * sine[rightPhase];
+    *output1 = amplitudeScale * sine[phase];
 }

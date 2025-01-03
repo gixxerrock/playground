@@ -24,8 +24,7 @@ private:
     float freqRatio;        // 1.0
     
     // outputs
-    float *outputLeft;
-    float *outputRight;
+    float *output1;
     
     uint8_t state;              // 0 - stopped  1 - playing
     uint8_t midiPitch;          // midi pitch

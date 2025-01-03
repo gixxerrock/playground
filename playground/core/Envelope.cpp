@@ -10,11 +10,9 @@
 
 Envelope::Envelope(Scene *_parent, char const *_name) : Component(_parent, _name)
 {
-    inputLeft = 0.0;
-    inputRight = 0.0;
+    input1 = 0.0;
 
-    outputLeft = nullptr;
-    outputRight = nullptr;
+    output1 = nullptr;
     
     state = 0;
     noteStartTime = 0.0;
@@ -30,11 +28,9 @@ Envelope::Envelope(Scene *_parent, char const *_name) : Component(_parent, _name
     releaseTime = 0.25;
 
     // expose parameters
-    inputList.push_back( ComponentIO("inputLeft", &inputLeft, "Float" ) );
-    inputList.push_back( ComponentIO("inputRight", &inputRight, "Float" ) );
+    inputList.push_back( ComponentIO("input1", &input1, "Float" ) );
     
-    outputList.push_back( ComponentIO("outputLeft", &outputLeft, "Float") );
-    outputList.push_back( ComponentIO("outputRight", &outputRight, "Float") );
+    outputList.push_back( ComponentIO("output1", &output1, "Float") );
 }
 
 void Envelope::HandleEvent(Event *event, double time)
@@ -104,6 +100,5 @@ void Envelope::UpdateTick(double time)
         assert(state == 0);
     }
 
-    *outputLeft = level * inputLeft;
-    *outputRight = level * inputRight;
+    *output1 = level * input1;
 }
