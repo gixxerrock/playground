@@ -170,6 +170,11 @@ void InitScene(void)
     gCmdProc->ProcessCommandString("create SineGenerator lfo1 0.5");
     gCmdProc->ProcessCommandString("param lfo1 amplitudeScale 0.5");
     gCmdProc->ProcessCommandString("connect lfo1 output1 sin1 amplitudeOffset");
+
+    // add lfo to sin2
+    gCmdProc->ProcessCommandString("create SineGenerator lfo2 2.0");
+    gCmdProc->ProcessCommandString("param lfo2 amplitudeScale 0.1");
+    gCmdProc->ProcessCommandString("connect lfo2 output1 sin2 freqOffset");
 }
 
 int main(int argc, char* argv[])

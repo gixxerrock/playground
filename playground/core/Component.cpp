@@ -10,8 +10,7 @@
 ComponentIO::ComponentIO(const char* _name, void* _pData, const char* _type)
 {
     strcpy(name, _name);
-    if (strcmp(_type, "Float") == 0)
-    {
+    if (strcmp(_type, "Float") == 0) {
         type = Float;
     }
     pData = _pData;
@@ -50,8 +49,7 @@ Component::Component(Scene *_parent, char const *_name)
 
 ComponentIO* Component::GetInput(const char *name)
 {
-    for (auto &i : inputList)
-    {
+    for (auto &i : inputList) {
         if( strcmp(i.name, name) == 0){
             return &i;
         }
@@ -73,8 +71,7 @@ bool Component::SetParameter(const char *name, void *value)
 // find named output in this comonent and set pointer
 bool Component::SetOutput(const char *name, ComponentIO *out)
 {
-    for (auto &o : outputList)
-    {
+    for (auto &o : outputList) {
         if( strcmp(o.name, name) == 0){
             o.SetPointer(out);
             return true;

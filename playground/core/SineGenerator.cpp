@@ -54,9 +54,8 @@ void SineGenerator::HandleEvent(Event *event, double time)
         case(Event::NoteOn):
             state = 1;
             noteStartTime = time;
-            midiPitch = ((NoteOnEvent *)event)->pitch;
 
-            freqScale = parentScene->MidiNoteToHz(midiPitch) * (float)TABLE_SIZE / sampleRate;
+            freqScale = parentScene->MidiNoteToHz(((NoteOnEvent *)event)->pitch) * (float)TABLE_SIZE / sampleRate;
             amplitudeScale = ((NoteOnEvent *)event)->velocity / 255.0;
             break;
         
@@ -82,7 +81,7 @@ void SineGenerator::UpdateTick(double time)
     // time from start of note
     float offsTime = time - noteStartTime;
 
-    uint32_t phase = (uint32_t)((offsTime * freqScale * freqRatio) / sampleTime) % TABLE_SIZE;;
+    uint32_t phase = (uint32_t)((offsTime * freqScale * (freqRatio + freqOffset)) / sampleTime) % TABLE_SIZE;
 
     *output1 = (amplitudeScale + amplitudeOffset) * sine[phase];
 }

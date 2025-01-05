@@ -37,11 +37,11 @@ public:
     float MidiNoteToHz(uint8_t n) { return MidiNoteTable[n]; }
 
 public:
-    uint32_t SampleRate;
-    float SampleTime;
-    uint8_t NumChannels;
+    uint32_t    SampleRate;
+    float       SampleTime;
+    uint8_t     NumChannels;
     
-    float tempo;
+    float       tempo;
     
 private:
     std::vector<Component*> componentList;

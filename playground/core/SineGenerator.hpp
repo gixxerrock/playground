@@ -21,17 +21,15 @@ private:
     // inputs
     float amplitudeScale;   // amplitude 0..1
     float amplitudeOffset;  // small +- number added to amplitude scale for LFO or FM
-    float freqOffset;       // +- Hz to tune oscillator
+    float freqOffset;       // +- ratio to tune oscillator
     float freqRatio;        // 1.0
     
     // outputs
     float *output1;
-    
+
+    // internal state    
     uint8_t state;              // 0 - stopped  1 - playing
-    uint8_t midiPitch;          // midi pitch
-    uint8_t midiVelocity;       // midi velocity
-    
-    bool respondNoteEvent;
+    bool respondNoteEvent;      // stand alone oscillator, or freq driven by events
     double noteStartTime;
     float freqScale;
 

@@ -13,12 +13,11 @@
 #include "CommandProcessor.hpp"
 
 // commands:
-// create type name
+// create type name p1 p2 p3
 // connect srcName srcOutput dstName dstOutput
 // event type val1 val2 val3
 // param compName paramName value
 
-//const char *delimiterStr =  " ,./";
 CommandProcessor::CommandProcessor(Scene *_scene)
 {
     scene = _scene;

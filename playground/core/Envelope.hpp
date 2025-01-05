@@ -32,7 +32,7 @@ private:
     // outputs
     float *output1;
     
-    uint32_t state; // 0:inactive 1:initial(AD) 2:sustain  3: release
+    uint32_t state;             // 0:inactive 1:initial(AD) 2:sustain  3: release
     double noteStartTime;
     double noteDecayTime;
     double noteSustainTime;
