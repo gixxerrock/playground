@@ -12,7 +12,6 @@
 #include "3rdparty/portaudio.h"
 #include "CommandProcessor.hpp"
 #include "core/Scene.hpp"
-#include "core/Event.hpp"
 
 #define SAMPLE_RATE   (44100)
 #define FRAMES_PER_BUFFER  (64)
@@ -23,12 +22,7 @@ CommandProcessor *gCmdProc = nullptr;
 class PaWrapper
 {
 public:
-    PaWrapper() : stream(0)
-    {
-        
-    }
-    
-    //Scene* GetScene(void) { return scene; }
+    PaWrapper() : stream(0) { }
     
     bool open(PaDeviceIndex index)
     {
@@ -196,9 +190,9 @@ int main(int argc, char* argv[])
     {
         if (wrapper.start())
         {
-            printf(" hacky temp polling loop.... hit x<Enter> to break a s start/stop \n");
+            printf("Simple polling loop.... hit x<Enter> to break (a s d etc...)<Enter> \n");
+            
             char ch = 0;
-
             while(ch != 'x')
             {
                 ch = getchar();

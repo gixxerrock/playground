@@ -17,6 +17,27 @@ ComponentIO::ComponentIO(const char* _name, void* _pData, const char* _type)
     pData = _pData;
 }
 
+// takes a pointer to a data payload and writes it to the internal variable wrapped by this IO
+void ComponentIO::SetData(void *payload)
+{
+    if (type == Float) {
+        *((float *)pData) = *((float *)payload);
+    } else {
+        *((int *)pData) = *((int *)payload);
+    }
+}
+
+// takes a variable wrapped in ComponentIO in external object and sets the internal pointer so this object can do a 
+// pointer write that updates a variable in that external object
+void ComponentIO::SetPointer(ComponentIO *out)
+{
+    if (type == Float) {
+        *((float **)pData) = (float *)out->pData;
+    } else {
+        *((int **)pData) = (int *)out->pData;
+    }
+}
+
 Component::Component(Scene *_parent, char const *_name)
 {
     parentScene = _parent;
@@ -45,7 +66,7 @@ bool Component::SetParameter(const char *name, void *value)
         return false;
     }
 
-    *((float *)comp->pData) = *((float *)value);
+    comp->SetData(value);
     return true;
 }
 
@@ -55,7 +76,7 @@ bool Component::SetOutput(const char *name, ComponentIO *out)
     for (auto &o : outputList)
     {
         if( strcmp(o.name, name) == 0){
-            *((float **)o.pData) = (float *)out->pData;
+            o.SetPointer(out);
             return true;
         }
     }

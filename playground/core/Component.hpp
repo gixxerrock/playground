@@ -11,7 +11,7 @@
 class Scene;
 class Event;
 
-// ComponentIO : a mapping to a variable inside a component class, so an external entity can modify its value via a ptr
+// ComponentIO : a mapping of a variable inside a component class, so an external entity can modify its value via a ptr
 struct ComponentIO
 {
     enum Type
@@ -25,6 +25,8 @@ struct ComponentIO
     void* pData;
     
     ComponentIO(const char* _name, void* _pData, const char* _type);
+    void SetData(void *payload);
+    void SetPointer(ComponentIO *out);
 };
 
 class Component
