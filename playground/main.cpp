@@ -11,6 +11,7 @@
 
 #include "3rdparty/portaudio.h"
 #include "CommandProcessor.hpp"
+#include "XmlProcessor.hpp"
 #include "core/Scene.hpp"
 
 #define SAMPLE_RATE   (44100)
@@ -149,6 +150,8 @@ private:
 
 void InitScene(void)
 {
+    XmlTestLoad("playground/data/test1.xml");
+    
     gScene = new Scene(SAMPLE_RATE, 2);
     gCmdProc = new CommandProcessor(gScene);
 
