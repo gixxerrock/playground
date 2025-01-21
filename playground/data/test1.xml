@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+<Scene>
+    <SineGenerator Name="sin1">
+
+    </SineGenerator>
+
+     <SineGenerator Name="sin2">
+        <freqRatio>3.0</freqRatio>
+        <amplitudeScale>0.6</amplitudeScale>
+    </SineGenerator>
+
+    <Envelope Name="adsr1">
+        <attackTime>0.1</attackTime>
+    </Envelope>
+</Scene>
