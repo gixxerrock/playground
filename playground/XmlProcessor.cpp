@@ -4,12 +4,42 @@
 //
 //  Created by Shawn Best on 2025-01-21.
 //
+#include "assert.h"
 #include "core/Scene.hpp"
 
 #include "3rdparty/tinyxml2.h"
 #include "XmlProcessor.hpp"
 
 using namespace tinyxml2;
+
+int ProcessComponents(const XMLElement *pComponents, Scene *pScene)
+{
+    int numComponents = 0;
+
+    const XMLElement *pComp = pComponents->FirstChildElement();
+    while(pComp)
+    {
+        const char* type = pComp->Name();
+        assert(type);
+
+        const char *name = nullptr;
+        pComp->QueryStringAttribute("Name", &name);
+
+        if (strcmp(type, "SineGenerator") == 0)
+        {
+            pScene->CreateComponent(type, name );
+        } 
+        else if (strcmp(type, "Envelope") == 0)
+        {
+            pScene->CreateComponent(type, name );
+        }
+
+        pComp = pComp->NextSiblingElement();
+        numComponents++;
+    }
+
+    return numComponents;
+}
 
 bool XmlTestLoad(const char* filename, Scene **ppScene)
 {
@@ -37,5 +67,10 @@ bool XmlTestLoad(const char* filename, Scene **ppScene)
     }
     
     *ppScene = new Scene(sampleRate, numChannels);
+
+    pElement = sceneElem->FirstChildElement("Components");
+    if(pElement) {
+        ProcessComponents(pElement, *ppScene);
+    }
     return true;
 }

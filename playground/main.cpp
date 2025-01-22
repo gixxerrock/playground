@@ -150,8 +150,6 @@ private:
 
 void InitScene(void)
 {
-    XmlTestLoad("playground/data/test1.xml", &gScene);
-    
     gScene = new Scene(SAMPLE_RATE, 2);
     gCmdProc = new CommandProcessor(gScene);
 
@@ -192,7 +190,8 @@ int main(int argc, char* argv[])
         return 1;
     }
 
-    InitScene();
+    XmlTestLoad("playground/data/test1.xml", &gScene);
+    //InitScene();
     
     if (wrapper.open(Pa_GetDefaultOutputDevice()))
     {
