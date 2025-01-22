@@ -150,7 +150,7 @@ private:
 
 void InitScene(void)
 {
-    XmlTestLoad("playground/data/test1.xml");
+    XmlTestLoad("playground/data/test1.xml", &gScene);
     
     gScene = new Scene(SAMPLE_RATE, 2);
     gCmdProc = new CommandProcessor(gScene);

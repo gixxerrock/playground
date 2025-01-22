@@ -1,7 +1,9 @@
 <?xml version="1.0" ?>
-<Scene>
-    <SineGenerator Name="sin1">
+<Scene Name="mainScene">
+    <SampleRate>44100</SampleRate>
+    <NumChannels>2</NumChannels>
 
+    <SineGenerator Name="sin1">
     </SineGenerator>
 
      <SineGenerator Name="sin2">
@@ -10,6 +12,10 @@
     </SineGenerator>
 
     <Envelope Name="adsr1">
+        <attackTime>0.1</attackTime>
+    </Envelope>
+
+    <Envelope Name="adsr2">
         <attackTime>0.1</attackTime>
     </Envelope>
 </Scene>

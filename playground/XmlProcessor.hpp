@@ -6,5 +6,6 @@
 //
 
 #pragma once
+class Scene;
 
-bool XmlTestLoad(const char* filename);
+bool XmlTestLoad(const char* filename, Scene **ppScene);
