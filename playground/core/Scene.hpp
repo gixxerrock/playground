@@ -13,6 +13,7 @@ class SoundObject;
 class Event;
 class Component;
 
+// sb-xxx TODO: inherit Scene from Component so I can handle the IO in a more consistent way
 class Scene
 {
 public:
@@ -22,7 +23,7 @@ public:
     
     float GetTempo(void) { return tempo; }              // current tempo in bpm
     
-    bool CreateComponent(char const *type, char const *name, char const *arg1 =  nullptr);
+    bool CreateComponent(char const *type, char const *name);
     bool SetParameter(char const *name, char const *parameter, void *value);
 
     bool Connect(char const *srcCompName, char const *srcOutput, char const *dstCompName, char const *dstInput);

@@ -9,14 +9,8 @@
 #include "Event.hpp"
 #include "SineGenerator.hpp"
 
-SineGenerator::SineGenerator(Scene *_parent, char const *_name, float baseFrequency) : Component(_parent, _name)
+SineGenerator::SineGenerator(Scene *_parent, char const *_name) : Component(_parent, _name)
 {
-    /* initialise sinusoidal wavetable */
-    for( uint32_t i = 0; i < TABLE_SIZE; i++ )
-    {
-        sine[i] = (float) sin( 2.0 * ((double)i/(double)TABLE_SIZE) * M_PI * 2. );
-    }
-    
     freqScale = 1.0;
     amplitudeScale = 1.0f;
     amplitudeOffset = 0.0f;
@@ -24,6 +18,27 @@ SineGenerator::SineGenerator(Scene *_parent, char const *_name, float baseFreque
     freqRatio = 1.0;
     respondNoteEvent = true;
     state = 0;
+    output1 = nullptr;
+    
+    Recalc();
+
+    // expose parameters
+    inputList.push_back( ComponentIO("baseFrequency", &baseFrequency, "Float", true, this ) );
+    inputList.push_back( ComponentIO("amplitudeScale", &amplitudeScale, "Float" ) );
+    inputList.push_back( ComponentIO("amplitudeOffset", &amplitudeOffset, "Float" ) );
+    inputList.push_back( ComponentIO("freqOffset", &freqOffset, "Float" ) );
+    inputList.push_back( ComponentIO("freqRatio", &freqRatio, "Float" ) );
+    
+    outputList.push_back( ComponentIO("output1", &output1, "Float") );
+}
+
+void SineGenerator::Recalc(void)
+{
+    // initialise sinusoidal wavetable 
+    for( uint32_t i = 0; i < TABLE_SIZE; i++ )
+    {
+        sine[i] = (float) sin( 2.0 * ((double)i/(double)TABLE_SIZE) * M_PI * 2. );
+    }
 
     // if a base frequency is specified calculate appropriate scale and disable midi notes
     if (baseFrequency > 0 )
@@ -32,15 +47,6 @@ SineGenerator::SineGenerator(Scene *_parent, char const *_name, float baseFreque
         state = 1;
         freqScale = baseFrequency * (float)TABLE_SIZE / sampleRate;
     }
-    output1 = nullptr;
-    
-    // expose parameters
-    inputList.push_back( ComponentIO("amplitudeScale", &amplitudeScale, "Float" ) );
-    inputList.push_back( ComponentIO("amplitudeOffset", &amplitudeOffset, "Float" ) );
-    inputList.push_back( ComponentIO("freqOffset", &freqOffset, "Float" ) );
-    inputList.push_back( ComponentIO("freqRatio", &freqRatio, "Float" ) );
-    
-    outputList.push_back( ComponentIO("output1", &output1, "Float") );
 }
 
 void SineGenerator::HandleEvent(Event *event, double time)
@@ -60,7 +66,7 @@ void SineGenerator::HandleEvent(Event *event, double time)
             break;
         
         case(Event::NoteOff):
-            //state = 0;
+            //state = 0;            // let adsr respond to note off since it needs to release
             break;
 
         default:

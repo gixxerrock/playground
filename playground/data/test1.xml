@@ -20,5 +20,25 @@
         <Envelope Name="adsr2">
             <attackTime>0.1</attackTime>
         </Envelope>
+
+        <SineGenerator Name="lfo1"> // todo: base frequency
+            <baseFrequency>0.5</baseFrequency>
+            <amplitudeScale>0.5</amplitudeScale>
+        </SineGenerator>
+
+        <SineGenerator Name="lfo2"> // todo: base frequency
+            <baseFrequency>2.0</baseFrequency>
+            <amplitudeScale>0.1</amplitudeScale>
+        </SineGenerator>
     </Components>
+
+    <Connections>
+        <Connect srcName="sin1" srcOut="output1"  dstName="adsr1" dstIn="input1" />
+        <Connect srcName="sin2" srcOut="output1"  dstName="adsr2" dstIn="input1" />
+        <Connect srcName="lfo1" srcOut="output1"  dstName="sin1" dstIn="freqOffset" />
+        <Connect srcName="lfo2" srcOut="output1"  dstName="sin2" dstIn="freqOffset" />
+        <Connect srcName="adsr1" srcOut="output1"  dstName="mainScene" dstIn="0" />
+        <Connect srcName="adsr2" srcOut="output1"  dstName="mainScene" dstIn="1" />
+    </Connections>
+
 </Scene>

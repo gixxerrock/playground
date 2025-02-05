@@ -7,13 +7,15 @@
 #include "Scene.hpp"
 #include "Component.hpp"
 
-ComponentIO::ComponentIO(const char* _name, void* _pData, const char* _type)
+ComponentIO::ComponentIO(const char* _name, void* _pData, const char* _type, bool _bSetTriggersRecalc, Component *_parent)
 {
     strcpy(name, _name);
     if (strcmp(_type, "Float") == 0) {
         type = Float;
     }
     pData = _pData;
+    bSetTriggersRecalc = _bSetTriggersRecalc;
+    parent = _parent;
 }
 
 // takes a pointer to a data payload and writes it to the internal variable wrapped by this IO
@@ -23,6 +25,9 @@ void ComponentIO::SetData(void *payload)
         *((float *)pData) = *((float *)payload);
     } else {
         *((int *)pData) = *((int *)payload);
+    }
+    if (bSetTriggersRecalc) {
+        parent->Recalc();
     }
 }
 

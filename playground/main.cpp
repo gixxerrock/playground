@@ -168,12 +168,15 @@ void InitScene(void)
     gScene->ConnectOutput("adsr2", "output1", 1);
 
     // add lfo to sin1
-    gCmdProc->ProcessCommandString("create SineGenerator lfo1 0.5");
+    //gCmdProc->ProcessCommandString("create SineGenerator lfo1 0.5");
+    gCmdProc->ProcessCommandString("create SineGenerator lfo1");
+    gCmdProc->ProcessCommandString("param lfo1 baseFrequency 0.5");
     gCmdProc->ProcessCommandString("param lfo1 amplitudeScale 0.5");
     gCmdProc->ProcessCommandString("connect lfo1 output1 sin1 amplitudeOffset");
 
     // add lfo to sin2
-    gCmdProc->ProcessCommandString("create SineGenerator lfo2 2.0");
+    gCmdProc->ProcessCommandString("create SineGenerator lfo2");
+    gCmdProc->ProcessCommandString("param lfo2 baseFrequency 2.0");
     gCmdProc->ProcessCommandString("param lfo2 amplitudeScale 0.1");
     gCmdProc->ProcessCommandString("connect lfo2 output1 sin2 freqOffset");
 }
@@ -190,7 +193,9 @@ int main(int argc, char* argv[])
         return 1;
     }
 
-    XmlTestLoad("playground/data/test1.xml", &gScene);
+    XmlLoadSetupFile("playground/data/test1.xml", &gScene);
+    gCmdProc = new CommandProcessor(gScene);
+    
     //InitScene();
     
     if (wrapper.open(Pa_GetDefaultOutputDevice()))

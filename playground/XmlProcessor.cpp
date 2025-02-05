@@ -12,6 +12,71 @@
 
 using namespace tinyxml2;
 
+void ProcessComponent(const XMLElement *pComp, Scene *pScene)
+{
+    // get component type
+    const char* type = pComp->Name();
+    assert(type);
+
+    // get component name
+    const char *name = nullptr;
+    pComp->QueryStringAttribute("Name", &name);
+    
+    if (!pScene->CreateComponent(type, name ))
+    {
+        printf("Error creating %s : %s\n", type, name );
+        return;
+    }
+
+    // process element's attributes
+    const XMLElement *pElem = pComp->FirstChildElement();
+    while(pElem)
+    {
+        const char* param = pElem->Name();
+        assert(param);
+
+        float value;
+        pElem->QueryFloatText(&value);
+
+        pScene->SetParameter(name, param, &value);
+
+        pElem = pElem->NextSiblingElement();
+    }
+}
+
+void ProcessConnection(const XMLElement *pElem, Scene *pScene)
+{
+    const char *srcName = nullptr;
+    pElem->QueryStringAttribute("srcName", &srcName);
+    assert(srcName);
+
+    const char *srcOut = nullptr;
+    pElem->QueryStringAttribute("srcOut", &srcOut);
+    assert(srcOut);
+
+    const char *dstName = nullptr;
+    pElem->QueryStringAttribute("dstName", &dstName);
+    assert(dstName);
+ 
+    const char *dstIn = nullptr;
+    pElem->QueryStringAttribute("dstIn", &dstIn);
+    assert(dstIn);
+
+    if (strcmp(dstName, "mainScene") == 0)
+    {
+        int chan = 0;
+        if (dstIn[0] == '1') {
+            chan = 1;
+        }
+        pScene->ConnectOutput(srcName, srcOut, chan);
+    } 
+    else
+    {
+        pScene->Connect(srcName, srcOut, dstName, dstIn);
+    }
+}
+
+
 int ProcessComponents(const XMLElement *pComponents, Scene *pScene)
 {
     int numComponents = 0;
@@ -19,20 +84,7 @@ int ProcessComponents(const XMLElement *pComponents, Scene *pScene)
     const XMLElement *pComp = pComponents->FirstChildElement();
     while(pComp)
     {
-        const char* type = pComp->Name();
-        assert(type);
-
-        const char *name = nullptr;
-        pComp->QueryStringAttribute("Name", &name);
-
-        if (strcmp(type, "SineGenerator") == 0)
-        {
-            pScene->CreateComponent(type, name );
-        } 
-        else if (strcmp(type, "Envelope") == 0)
-        {
-            pScene->CreateComponent(type, name );
-        }
+        ProcessComponent(pComp, pScene);
 
         pComp = pComp->NextSiblingElement();
         numComponents++;
@@ -41,7 +93,7 @@ int ProcessComponents(const XMLElement *pComponents, Scene *pScene)
     return numComponents;
 }
 
-bool XmlTestLoad(const char* filename, Scene **ppScene)
+bool XmlLoadSetupFile(const char* filename, Scene **ppScene)
 {
     XMLDocument xmlDoc;
     XMLError ret = xmlDoc.LoadFile(filename);
@@ -72,5 +124,15 @@ bool XmlTestLoad(const char* filename, Scene **ppScene)
     if(pElement) {
         ProcessComponents(pElement, *ppScene);
     }
+    
+    // process connections
+    pElement = sceneElem->FirstChildElement("Connections");
+    pElement = pElement->FirstChildElement("Connect");
+    while(pElement)
+    {
+        ProcessConnection(pElement, *ppScene);
+        pElement = pElement->NextSiblingElement();
+    }
+
     return true;
 }

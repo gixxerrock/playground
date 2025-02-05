@@ -11,14 +11,16 @@
 class SineGenerator : public Component
 {
 public:
-    SineGenerator(Scene *_parent, char const *_name, float baseFrequency = 0);
+    SineGenerator(Scene *_parent, char const *_name);
     
     void HandleEvent(Event *event, double time);
     void UpdateTick(double time);
+    void Recalc(void);
     
 private:
     
     // inputs
+    float baseFrequency;
     float amplitudeScale;   // amplitude 0..1
     float amplitudeOffset;  // small +- number added to amplitude scale for LFO or FM
     float freqOffset;       // +- ratio to tune oscillator

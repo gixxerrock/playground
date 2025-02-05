@@ -40,7 +40,7 @@ bool CommandProcessor::ProcessCommandString(const char *cmdStr, double time)
         else if (numCmds == 3) {
             return scene->CreateComponent(a2, a3);
         } else {
-            return scene->CreateComponent(a2, a3, a4);
+            return false;
         }
         
     }
